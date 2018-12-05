@@ -10,7 +10,7 @@ def isWordMorph(w1,w2):
 	for s in difflib.ndiff(w1,w2):
 		if s[0] != ' ':
 			diff += 1
-	return diff == 2 or diff == 1 and len(w1) == len(w2)+1 or diff == 1 and len(w1)+1 == len(w2)
+	return diff == 2 and len(w1) == len(w2) or diff == 1 and len(w1) == len(w2)+1 or diff == 1 and len(w1)+1 == len(w2)
 
 
 def buildedgeL(wordL):
