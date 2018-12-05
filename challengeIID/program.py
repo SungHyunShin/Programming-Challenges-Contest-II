@@ -4,6 +4,7 @@
 import sys
 import collections
 import difflib
+import copy
 
 def isWordMorph(w1,w2):
 	diff = 0
@@ -34,29 +35,39 @@ def bfs(edgeL,v):
 	frontier.append((v,path))
 
 	while frontier:
+		#print("ccruent frontier is ", frontier)
 		x = min(frontier,key=lambda t: len(t[1]))
 		frontier.remove(x)
 		v,path = x
-		if v in marked:
-			continue
 		if len(path) > len(longestP):
 			longestP = path
 		elif len(path) == len(longestP):
 			if path > longestP:
 				longestP = path
-		marked.add(v)
+		#print("x is ",x, " current path ", path, " longest path ", longestP, " frontier is ", frontier)
+
+		#if v in marked:
+		#	continue
+		#marked.add(v)
 		for i,u in enumerate(edgeL[v]):
-			p = path.copy()
+			p = copy.deepcopy(path)
+			#print(i, u, edgeL)
+			if i in path:
+				continue
 			if u == 1:
 				p.append(i)
 				frontier.append((i,p))
+				#print(p)
+		#print("next frontier is ", frontier)
 	return(longestP)
 
 #main
 if __name__ == '__main__':
 	wordL = [line.rstrip() for line in sys.stdin.readlines()]
 	wordL.sort()
+	#print(wordL)
 	edgeL = buildedgeL(wordL)
+	#print(edgeL)
 	longestP = []
 	for v in range(len(wordL)):
 		path = bfs(edgeL,v)
