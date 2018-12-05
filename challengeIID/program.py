@@ -19,47 +19,33 @@ def buildedgeL(wordL):
 	for i in range(len(wordL)):
 		edgeL.append([0]*len(wordL))
 	for i in range(len(wordL)):
-		for j in range(i+1,len(wordL)):
+		for j in range(i+1, len(wordL)):
 			if isWordMorph(wordL[j],wordL[i]):
 				edgeL[i][j] = 1
 	return edgeL
 
-def bfs(edgeL,v):
-	longestP = []
+def bfs(edgeL,v, end):
+
 	
 	frontier = []
-	longestPath = []
-	marked = set()
 	path = []
 	path.append(v)
 	frontier.append((v,path))
-
+	all_paths = []
 	while frontier:
-		#print("ccruent frontier is ", frontier)
 		x = min(frontier,key=lambda t: len(t[1]))
 		frontier.remove(x)
-		v,path = x
-		if len(path) > len(longestP):
-			longestP = path
-		elif len(path) == len(longestP):
-			if path > longestP:
-				longestP = path
-		#print("x is ",x, " current path ", path, " longest path ", longestP, " frontier is ", frontier)
-
-		#if v in marked:
-		#	continue
-		#marked.add(v)
+		v, path = x
+		
+		if v == end:
+			all_paths.append(path)
+			continue
 		for i,u in enumerate(edgeL[v]):
-			p = copy.deepcopy(path)
-			#print(i, u, edgeL)
-			if i in path:
-				continue
 			if u == 1:
+				p = copy.deepcopy(path)
 				p.append(i)
 				frontier.append((i,p))
-				#print(p)
-		#print("next frontier is ", frontier)
-	return(longestP)
+	return all_paths
 
 #main
 if __name__ == '__main__':
@@ -67,12 +53,22 @@ if __name__ == '__main__':
 	wordL.sort()
 	#print(wordL)
 	edgeL = buildedgeL(wordL)
-	#print(edgeL)
+
 	longestP = []
+	paths = []
 	for v in range(len(wordL)):
-		path = bfs(edgeL,v)
-		if len(path) > len(longestP):
-			longestP = path
-	print(len(longestP))
-	for i in longestP:
+		for k in range(v, len(wordL)):
+			curr = bfs(edgeL,v, k)
+			if curr != []:
+				for path in curr:
+					paths.append(path)
+	longest = 0
+	final_path = []
+	for path in paths:
+		if len(path) > longest:
+			longest = len(path)
+			final_path = path
+	print(longest)
+	for i in sorted(final_path):
 		print(wordL[i])
+		
