@@ -23,7 +23,7 @@ def buildedgeL(wordL):
 				edgeL[i][j] = 1
 	return edgeL
 
-def dfs(edgeL,v):
+def bfs(edgeL,v):
 	longestP = []
 	
 	frontier = []
@@ -41,6 +41,9 @@ def dfs(edgeL,v):
 			continue
 		if len(path) > len(longestP):
 			longestP = path
+		elif len(path) == len(longestP):
+			if path > longestP:
+				longestP = path
 		marked.add(v)
 		for i,u in enumerate(edgeL[v]):
 			p = path.copy()
@@ -56,7 +59,7 @@ if __name__ == '__main__':
 	edgeL = buildedgeL(wordL)
 	longestP = []
 	for v in range(len(wordL)):
-		path = dfs(edgeL,v)
+		path = bfs(edgeL,v)
 		if len(path) > len(longestP):
 			longestP = path
 	print(len(longestP))
