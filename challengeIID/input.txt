@@ -1,0 +1,10 @@
+cat
+dig
+dog
+fig
+fin
+fine
+fin
+fog
+log
+wine
